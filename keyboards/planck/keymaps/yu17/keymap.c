@@ -99,16 +99,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Mute | Vol- | Vol+ |      |      |      |      |      |      | Brit-| Brit+|      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |NKOFF | NKON |GUIOFF|GUION |      |
+ * | Shift|      |      |      |      |      |      |NKOFF | NKON |GUIOFF|GUION |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |TG_LOW|   TO_BASE   |TG_RIS|      | RGUI | MENU |RCTRL |
+ * | LCtrl|      | LGUI | LALT |TG_LOW|   TO_BASE   |TG_RIS|      | RGUI | MENU |RCTRL |
  * `-----------------------------------------------------------------------------------'
  */
 [_3_FN] = LAYOUT_planck_grid(
     KC_F1,    KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
     KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  NK_OFF,   NK_ON, GUI_OFF,  GUI_ON, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TG(_1_LOWER), TO(_0_BASE), TO(_0_BASE), TG(_2_RAISE),  MU_TOG, KC_RGUI, KC_MENU, KC_RCTL
+    KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  NK_OFF,   NK_ON, GUI_OFF,  GUI_ON, XXXXXXX,
+    KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, TG(_1_LOWER), TO(_0_BASE), TO(_0_BASE), TG(_2_RAISE),  MU_TOG, KC_RGUI, KC_MENU, KC_RCTL
 ),
 
 /* Extra
@@ -117,16 +117,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Esc  |      |      |      |      |      |      |      |      | ScrLk| Pause| PrScr|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Shift|      |      |      |      |      |      |      |      | Insrt| Del  |      |
+ * | Shift|      |      |      |      |TermOn|TermOf|      |      | Insrt| Del  |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | LCtrl|      | LGUI | LALT |      |    Space    |      |      |      |      |      |
+ * | LCtrl|      | LGUI | LALT |      |    Space    |      |      |      | Reset|      |
  * `-----------------------------------------------------------------------------------'
  */
 [_4_EXTRA] = LAYOUT_planck_grid(
     KC_F13,   KC_F14,  KC_F15,   KC_F16,  KC_F17,  KC_F18,  KC_F19,  KC_F20,  KC_F21,  KC_F22,  KC_F23,  KC_F24,
     KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_SLCK, KC_PAUS, KC_PSCR,
-    KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_INS,  KC_DEL, XXXXXXX,
-    KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX,  KC_SPC,  KC_SPC, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+    KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TERM_ON,TERM_OFF, XXXXXXX, XXXXXXX,  KC_INS,  KC_DEL, XXXXXXX,
+    KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX,  KC_SPC,  KC_SPC, XXXXXXX, XXXXXXX, XXXXXXX,   RESET, XXXXXXX
 ),
 
 /* KbdCfg
@@ -327,8 +327,8 @@ void matrix_scan_user(void) {
 
 bool music_mask_user(uint16_t keycode) {
   switch (keycode) {
-    case MO(_1_LOWER):
-    case MO(_2_RAISE):
+    case LT(_3_FN, KC_APP):
+    case MO(_3_FN):
       return false;
     default:
       return true;
