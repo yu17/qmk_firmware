@@ -24,7 +24,8 @@ enum planck_layers {
   _2_RAISE,
   _3_FN,
   _4_EXTRA,
-  _5_KBDCFG,
+  _5_MOUSE,
+  _6_KBDCFG,
   _PLOVER,
 };
 
@@ -97,17 +98,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Mute | Vol- | Vol+ |      |      |      |      |      |      | Brit-| Brit+|      |
+ * | Mute | Vol- | Vol+ |      |      |      |      |      |      | ScrLk| Pause| PrScr|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Shift|      |      |      |      |      |      |NKOFF | NKON |GUIOFF|GUION |      |
+ * | Shift| Brit-| Brit+|      |      |      |      |      |      | Insrt| Del  |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | LCtrl|      | LGUI | LALT |TG_LOW|   TO_BASE   |TG_RIS|      | RGUI | MENU |RCTRL |
  * `-----------------------------------------------------------------------------------'
  */
 [_3_FN] = LAYOUT_planck_grid(
-    KC_F1,    KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-    KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BRID, KC_BRIU, XXXXXXX,
-    KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  NK_OFF,   NK_ON, GUI_OFF,  GUI_ON, XXXXXXX,
+    KC_F1,     KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,
+    KC_MUTE, KC_VOLD, KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_SLCK, KC_PAUS, KC_PSCR,
+    KC_LSFT, KC_BRID, KC_BRIU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_INS,  KC_DEL, XXXXXXX,
     KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, TG(_1_LOWER), TO(_0_BASE), TO(_0_BASE), TG(_2_RAISE),  MU_TOG, KC_RGUI, KC_MENU, KC_RCTL
 ),
 
@@ -115,18 +116,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  F13 |  F14 |  F15 |  F16 |  F17 |  F18 |  F19 |  F20 |  F21 |  F22 |  F23 |  F24 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Esc  |      |      |      |      |      |      |      |      | ScrLk| Pause| PrScr|
+ * | Esc  |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Shift|      |      |      |      |TermOn|TermOf|      |      | Insrt| Del  |      |
+ * | Shift|      |      |      |      |TermOf|TermOn|NKOFF | NKON |GUIOFF|GUION | Mouse|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | LCtrl|      | LGUI | LALT |      |    Space    |      |      |      | Reset|      |
  * `-----------------------------------------------------------------------------------'
  */
 [_4_EXTRA] = LAYOUT_planck_grid(
-    KC_F13,   KC_F14,  KC_F15,   KC_F16,  KC_F17,  KC_F18,  KC_F19,  KC_F20,  KC_F21,  KC_F22,  KC_F23,  KC_F24,
-    KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_SLCK, KC_PAUS, KC_PSCR,
-    KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TERM_ON,TERM_OFF, XXXXXXX, XXXXXXX,  KC_INS,  KC_DEL, XXXXXXX,
+    KC_F13,   KC_F14,  KC_F15,  KC_F16,  KC_F17,  KC_F18,  KC_F19,  KC_F20,  KC_F21,  KC_F22,  KC_F23,  KC_F24,
+    KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,TERM_OFF, TERM_ON,  NK_OFF,   NK_ON, GUI_OFF,  GUI_ON, TO(_5_MOUSE),
     KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX,  KC_SPC,  KC_SPC, XXXXXXX, XXXXXXX, XXXXXXX,   RESET, XXXXXXX
+),
+
+/* Mouse
+ * ,-----------------------------------------------------------------------------------.
+ * | Tab  |      | MsWhU|      |      |      |      |      |MsSpd0|MsSpd1|MsSpd2|ToBase|
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Esc  | MsWhL| MsWhD| MsWhR|      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | Shift|      |      |      |      |      |      |      | MS_1 | MS_3 | MS_2 |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | LCtrl| FN/M | LGUI | LALT | MS_5 |    Space    | MS_4 | MS_L | MS_U | MS_D | MS_R |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_5_MOUSE] = LAYOUT_planck_grid(
+    KC_TAB,  XXXXXXX, KC_WH_U, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ACL0, KC_ACL1, KC_ACL2, TO(_0_BASE),
+    KC_ESC,  KC_WH_L, KC_WH_D, KC_WH_R, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BTN1, KC_BTN3, KC_BTN2, XXXXXXX,
+    KC_LCTL, LT(_3_FN, KC_APP), KC_LGUI, KC_LALT, KC_BTN5,  KC_SPC,  KC_SPC, KC_BTN4, KC_MS_L, KC_MS_U, KC_MS_D, KC_MS_R
 ),
 
 /* KbdCfg
@@ -141,7 +160,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_5_KBDCFG] = LAYOUT_planck_grid(
+[_6_KBDCFG] = LAYOUT_planck_grid(
     XXXXXXX, RESET,   DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD, KC_DEL ,
     XXXXXXX, XXXXXXX, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK,  DVORAK,  PLOVER,  XXXXXXX,
     XXXXXXX, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  TERM_ON, TERM_OFF, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -174,7 +193,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #endif
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _1_LOWER, _2_RAISE, _5_KBDCFG);
+  return update_tri_layer_state(state, _1_LOWER, _2_RAISE, _6_KBDCFG);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -211,7 +230,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
         layer_off(_2_RAISE);
         layer_off(_1_LOWER);
-        layer_off(_5_KBDCFG);
+        layer_off(_6_KBDCFG);
         layer_on(_PLOVER);
         if (!eeconfig_is_enabled()) {
             eeconfig_init();
@@ -283,12 +302,12 @@ void dip_switch_update_user(uint8_t index, bool active) {
 #ifdef AUDIO_ENABLE
                 if (play_sound) { PLAY_SONG(plover_song); }
 #endif
-                layer_on(_5_KBDCFG);
+                layer_on(_6_KBDCFG);
             } else {
 #ifdef AUDIO_ENABLE
                 if (play_sound) { PLAY_SONG(plover_gb_song); }
 #endif
-                layer_off(_5_KBDCFG);
+                layer_off(_6_KBDCFG);
             }
 #ifdef AUDIO_ENABLE
             play_sound = true;
