@@ -187,6 +187,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    default_lighting
+);
+
+const rgblight_segment_t PROGMEM default_lighting[] = RGBLIGHT_LAYER_SEGMENTS(
+    {1, 9, HSV_CYAN}
+);
+
+void keyboard_post_init_user(void) {
+    // Enable the LED layers
+    rgblight_layers = default_lighting;
+}
+
 #ifdef AUDIO_ENABLE
   float plover_song[][2]     = SONG(PLOVER_SOUND);
   float plover_gb_song[][2]  = SONG(PLOVER_GOODBYE_SOUND);
@@ -352,17 +365,4 @@ bool music_mask_user(uint16_t keycode) {
     default:
       return true;
   }
-}
-
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    default_lighting
-);
-
-const rgblight_segment_t PROGMEM default_lighting[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 9, HSV_CYAN}
-);
-
-void keyboard_post_init_user(void) {
-    // Enable the LED layers
-    rgblight_layers = default_lighting;
 }
