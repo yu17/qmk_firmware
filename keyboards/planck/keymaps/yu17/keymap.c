@@ -353,3 +353,16 @@ bool music_mask_user(uint16_t keycode) {
       return true;
   }
 }
+
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    default_lighting
+);
+
+const rgblight_segment_t PROGMEM default_lighting[] = RGBLIGHT_LAYER_SEGMENTS(
+    {1, 9, HSV_CYAN}
+);
+
+void keyboard_post_init_user(void) {
+    // Enable the LED layers
+    rgblight_layers = default_lighting;
+}
