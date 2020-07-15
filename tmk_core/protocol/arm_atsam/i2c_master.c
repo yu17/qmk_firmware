@@ -39,6 +39,9 @@ volatile uint8_t i2c_led_q_running;
 
 #endif  // !defined(MD_BOOTLOADER) && defined(RGB_MATRIX_ENABLE)
 
+__attribute__((__aligned__(16))) DmacDescriptor dmac_desc;
+__attribute__((__aligned__(16))) DmacDescriptor dmac_desc_wb;
+
 void i2c0_init(void) {
     DBGC(DC_I2C0_INIT_BEGIN);
 

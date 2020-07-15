@@ -35,7 +35,8 @@ enum planck_keycodes {
   DVORAK,
   PLOVER,
   BACKLIT,
-  EXT_PLV
+  EXT_PLV,
+  RGB_M_TK
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -116,17 +117,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  F13 |  F14 |  F15 |  F16 |  F17 |  F18 |  F19 |  F20 |  F21 |  F22 |  F23 |  F24 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Esc  |      |      |      |      |      |      |      |      |      |      |      |
+ * | Esc  |RGB_MP|RGB_MB|      |      |      |      |      |      |Audoff|Aud on|      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Shift|      |      |      |      |TermOf|TermOn|NKOFF | NKON |GUIOFF|GUION | Mouse|
+ * | Shift|RGBTOG|RGBHUI|RGBSAI|RGBVAI|TermOf|TermOn|NKOFF | NKON |GUIOFF|GUION | Mouse|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | LCtrl|      | LGUI | LALT |      |    Space    |      |      |      | Reset|      |
  * `-----------------------------------------------------------------------------------'
  */
 [_4_EXTRA] = LAYOUT_planck_grid(
     KC_F13,   KC_F14,  KC_F15,  KC_F16,  KC_F17,  KC_F18,  KC_F19,  KC_F20,  KC_F21,  KC_F22,  KC_F23,  KC_F24,
-    KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,TERM_OFF, TERM_ON,  NK_OFF,   NK_ON, GUI_OFF,  GUI_ON, TO(_5_MOUSE),
+    KC_ESC,  RGB_M_P,RGB_M_TK, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  AU_OFF,   AU_ON, XXXXXXX,
+    KC_LSFT, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI,TERM_OFF, TERM_ON,  NK_OFF,   NK_ON, GUI_OFF,  GUI_ON, TO(_5_MOUSE),
     KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX,  KC_SPC,  KC_SPC, XXXXXXX, XXXXXXX, XXXXXXX,   RESET, XXXXXXX
 ),
 
@@ -187,25 +188,74 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    default_lighting
+// How long (in milliseconds) to wait between animation steps for each of the "Solid color breathing" animations
+const uint8_t RGBLED_BREATHING_INTERVALS[] PROGMEM = {30, 20, 10, 5};
+// How long (in milliseconds) to wait between animation steps for each of the "Cycling rainbow" animations
+//const uint8_t RGBLED_RAINBOW_MOOD_INTERVALS[] PROGMEM = {120, 60, 30};
+// How long (in milliseconds) to wait between animation steps for each of the "Swirling rainbow" animations
+//const uint8_t RGBLED_RAINBOW_SWIRL_INTERVALS[] PROGMEM = {100, 50, 20};
+// How long (in milliseconds) to wait between animation steps for each of the "Snake" animations
+//const uint8_t RGBLED_SNAKE_INTERVALS[] PROGMEM = {100, 50, 20};
+// How long (in milliseconds) to wait between animation steps for each of the "Knight" animations
+//const uint8_t RGBLED_KNIGHT_INTERVALS[] PROGMEM = {127, 63, 31};
+// How long (in milliseconds) to wait between animation steps for each of the "Twinkle" animations
+const uint8_t RGBLED_TWINKLE_INTERVALS[] PROGMEM = {50, 25, 10};
+// These control which hues are selected for each of the "Static gradient" modes
+const uint8_t RGBLED_GRADIENT_RANGES[] PROGMEM = {255, 170, 127, 85, 64};
+
+const rgblight_segment_t PROGMEM lit_0_solid_cyan[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, 116, 64, 255}//lighter than hsv_cyan
 );
 
-const rgblight_segment_t PROGMEM default_lighting[] = RGBLIGHT_LAYER_SEGMENTS(
-    {1, 9, HSV_CYAN}
+const rgblight_segment_t PROGMEM lit_1_solid_green[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, 85, 170, 255}//slightly ligher than hsv_green
+);
+
+const rgblight_segment_t PROGMEM lit_2_solid_purple[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, 170, 170, 255}//pueple-blue
+);
+
+const rgblight_segment_t PROGMEM lit_3_solid_lemon[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, 53, 153, 255}//lemon-yellow-green
+);
+
+const rgblight_segment_t PROGMEM lit_4_solid_orange[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 9, 20, 153, 255}//light than hsv_orange
+);
+
+const rgblight_segment_t* const PROGMEM backlit_layers[] = RGBLIGHT_LAYERS_LIST(
+    lit_0_solid_cyan,
+    lit_1_solid_green,
+    lit_2_solid_purple,
+    lit_3_solid_lemon,
+    lit_4_solid_orange
 );
 
 void keyboard_post_init_user(void) {
     // Enable the LED layers
-    rgblight_layers = default_lighting;
+    rgblight_layers = backlit_layers;
 }
+
+// Additional operations each time led layer status being updated.
+
+//bool led_update_user(led_t led_state) {
+//    rgblight_set_layer_state(0, 1);
+//    return true;
+//}
 
 #ifdef AUDIO_ENABLE
   float plover_song[][2]     = SONG(PLOVER_SOUND);
   float plover_gb_song[][2]  = SONG(PLOVER_GOODBYE_SOUND);
 #endif
 
+// Operations each time layer state being updated.
+
 layer_state_t layer_state_set_user(layer_state_t state) {
+  rgblight_set_layer_state(0, layer_state_cmp(state, 0));
+  rgblight_set_layer_state(1, layer_state_cmp(state, 1));
+  rgblight_set_layer_state(2, layer_state_cmp(state, 2));
+  rgblight_set_layer_state(3, layer_state_cmp(state, 3));
+  rgblight_set_layer_state(4, layer_state_cmp(state, 4));
   return update_tri_layer_state(state, _1_LOWER, _2_RAISE, _6_KBDCFG);
 }
 
@@ -260,6 +310,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           PLAY_SONG(plover_gb_song);
         #endif
         layer_off(_PLOVER);
+      }
+      return false;
+      break;
+    case RGB_M_TK:
+      if (record->event.pressed) {
+        rgblight_mode(RGBLIGHT_MODE_TWINKLE);
       }
       return false;
       break;
