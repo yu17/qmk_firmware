@@ -36,7 +36,8 @@ enum planck_keycodes {
   PLOVER,
   BACKLIT,
   EXT_PLV,
-  RGB_M_TK
+  RGB_OFF,
+  RGB_ON
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -126,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_4_EXTRA] = LAYOUT_planck_grid(
     KC_F13,   KC_F14,  KC_F15,  KC_F16,  KC_F17,  KC_F18,  KC_F19,  KC_F20,  KC_F21,  KC_F22,  KC_F23,  KC_F24,
-    KC_ESC,  RGB_M_P,RGB_M_TK, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  AU_OFF,   AU_ON, XXXXXXX,
+    KC_ESC,  RGB_OFF,  RGB_ON, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  AU_OFF,   AU_ON, XXXXXXX,
     KC_LSFT, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI,TERM_OFF, TERM_ON,  NK_OFF,   NK_ON, GUI_OFF,  GUI_ON, TO(_5_MOUSE),
     KC_LCTL, XXXXXXX, KC_LGUI, KC_LALT, XXXXXXX,  KC_SPC,  KC_SPC, XXXXXXX, XXXXXXX, XXXXXXX,   RESET, XXXXXXX
 ),
@@ -313,11 +314,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case RGB_M_TK:
-      if (record->event.pressed) {
-        rgblight_mode(RGBLIGHT_MODE_TWINKLE);
-      }
-      return false;
+    case RGB_OFF:
+      rgblight_disable();
+      break;
+    case RGB_ON:
+      rgblight_enable();
       break;
   }
   return true;
